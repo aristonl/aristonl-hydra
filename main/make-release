@@ -1,0 +1,73 @@
+#!/bin/bash
+# Builds release and sends email
+# Update: now creates github release using `gh`
+# Copyright © 2022 Ariston Lorenzo <4tl0renz0@gmail.com>
+#
+
+RELDIR=~/hydra/releases
+
+# Determine version number
+RELNUM=$(gum input --placeholder "vX.X.X")
+
+# gum confirm "Are you ahead of the release commit?" && RELCOMMIT = $(gum input --placeholder "Commit ID of Release")
+
+LASTREL=$(gum input --placeholder "Commit ID of Last Release")
+
+# create git tag
+git tag ${RELNUM}
+
+# build release, tarball, patch, changelog
+mkdir ${RELDIR}/${RELNUM}
+git archive --format=tar --prefix=hydra-$RELEASE/ HEAD | gzip -9 > $RELDIR/$RELNUM/hydra-$RELNUM.tar.gz
+git diff-tree -p $LASTREL HEAD > $RELDIR/$RELNUM/patch-$RELNUM
+DIFFSTAT=$(cat $RELDIR/$RELNUM/patch-$RELNUM | diffstat -p1)
+SHORTLOG=$(git shortlog $LASTREL..HEAD)
+git log $LASTREL..HEAD > $RELDIR/$RELNUM/Changelog-$RELNUM
+echo $DIFFSTAT > $RELDIR/$RELNUM/diffstat-$RELNUM
+echo $SHORTLOG > $RELDIR/$RELNUM/Shortlog-$RELNUM
+
+# create email
+gum confirm "Do you want to add extra text to your announcement email?" && EMAILTEXT=$(gum write --placeholder "Write announcement text here...")
+
+cat << __EOF__ > ${RELDIR}/${RELNUM}/email
+I'm announcing the release of ${RELNUM} of Hydra/Inferno.
+
+All users should upgrade ASAP.
+
+The updated ${RELNUM} git tree can be found at:
+	ssh://git.n11.dev/hydra.git hydra-${RELNUM}
+and can be browsed online via GitHub thru:
+	https://github.com/aristonl/hydra/releases/tag/${RELNUM}
+
+Any bug fixes/security fixes should be directed to the Hydra
+stable tree. All other patches for the next incremental major
+version of Hydra can be submitted to the main tree.
+
+---
+
+${EMAILTEXT}
+
+thanks,
+
+aristonl
+
+-----
+
+${DIFFSTAT}
+
+-----
+
+${SHORTLOG}
+
+__EOF__
+
+# send release email out
+
+TO="hydra-inferno@googlegroups.com"
+CC="levicowan2005@icloud.com"
+SUBJECT="Hydra/Inferno ${RELNUM}"
+
+#neomutt -s "${SUBJECT}" -a ${RELDIR}/${RELNUM}/email -c ${CC} ${TO}
+
+# create GitHub release
+gh release create ${RELNUM} ${RELDIR}/${RELNUM}/hydra-${RELNUM}.tar.gz -F ${RELDIR}/${RELNUM}/email
