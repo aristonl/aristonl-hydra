@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# Pull all repositories
+
+git clone ssh://git.n11.dev/releases releases
+
+git clone ssh://git.n11.dev/hydra main/n11
+# make a repo for the queues!
+
+git clone ssh://git.n11.dev/hydra-stable stable/aristonl
