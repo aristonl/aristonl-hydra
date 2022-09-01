@@ -2,9 +2,9 @@
 #
 # Pull all repositories
 
-git clone ssh://git.n11.dev/releases releases
+gum spin --spinner dot --title "Cloning releases repo..." -- git clone ssh://git.n11.dev/releases releases
 
-git clone ssh://git.n11.dev/hydra main/n11
+gum spin --spinner dot --title "Cloning hydra main..." -- git clone ssh://git.n11.dev/hydra main/n11
 # make a repo for the queues!
 
-git clone ssh://git.n11.dev/hydra-stable stable/aristonl
+gum spin --spinner dot --title "Cloning hydra stable" -- git clone ssh://git.n11.dev/hydra-stable stable/aristonl
