@@ -1,1 +1,23 @@
 aristonl's hydra directory.
+
+This is my main work directory for hydra where you
+can find all the scripts and configs I use to maintain
+Hydra.
+
+MAIN/
+
+This folder contains all scripts specific to 
+maintaining the main tree of Hydra along with the
+repositories themselves.
+
+SCRIPTS/
+
+This folder contains all scripts that can be used
+universally or by other applications (such as neomutt
+for appling patches).
+
+STABLE/
+
+This folder contains all scripts specific to
+maintaining the stable tree of Hydra along with the
+repositories themselves. 
