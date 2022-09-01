@@ -1,0 +1,101 @@
+#!/bin/bash
+#
+# Applies patch to git tree from email and replies to 
+# the user that I have applied their patch to my tree.
+#
+# Copyright © 2022 Ariston Lorenzo.
+#
+
+EMAIL_ADDR='<4tl0renz0@gmail.com>'
+
+PATCH=$1
+
+FROM=$EMAIL_ADDR
+
+git_apply() {
+	git am -s
+	echo "[ret] to continue"
+	read
+	git commit --amend
+}
+
+author()
+{
+        first_author=""
+        TXT=$2
+        if [ ! -f $TXT ]
+        then
+                echo "$TXT is missing"
+                exit 1
+        fi
+        author=""
+        while read l
+        do
+		# skip the Message-ID: line so we don't send email to the wrong place
+##		echo "$l"
+		reply=$(echo "$l" | grep -i Message-ID:)
+		if [ x"$reply" != x ]
+		then
+			continue
+		fi
+
+		# if this is the start of the diff, then it's time to stop looking
+		diff=$(echo "$l" | grep "^---")
+		if [ x"$diff" != x ]
+		then
+##			echo "diffstart!!!!!"
+			break
+		fi
+
+                for x in $l
+                do
+                        a=$(echo "$x" | sed -n -e 's/.*<\(.*@[^>]*\).*/\1/p')
+                        if [ x"$a" != x ]
+                        then
+                                if [ x"$author" == x ]
+                                then
+                                        author=$a
+                                        first_author=$a
+                                else
+                                        author="$author $a"
+                                fi
+                        fi
+                done
+        done < $TXT
+        author=$(echo "$author" | tr ' ' '\n' | grep -v "$first_author" |
+                sort | uniq)
+        author="$first_author $author"
+        eval $1=$(echo $author | sed -e 's/ /,/g')
+        if [ x"$3" != x ]
+        then
+                eval $3=$first_author
+        fi
+}
+
+# Look fof message ID and subject
+# echo "PATCH = $PATCH"
+SUBJECT=`grep "Subject:" $PATCH | sed s/Subject\:\ //`
+MESSAGE_ID=`grep -i "^Message-ID:" $PATCH | cut -f 2 -d ' ' | cut -f 2 -d '<' | cut -f 1 -d '>'`
+author AUTHOR $1 FIRST_AUTHOR
+	if [ x"$AUTHOR" == "x" ]
+	then
+		echo "nobody to notify"
+		exit 0
+	fi
+	to=""
+	for i in $(echo "$AUTHOR" | sed -e 's/,/ /g')
+	do
+		if ! echo "$TO" | grep "$i"
+		then
+			to=$to" -to $i"
+		fi
+	done
+	if [ x"$cc" != x ]
+	then
+		cc="-cc $cc"
+	fi
+echo $MESSAGE_ID
+echo $SUBJECT
+echo $AUTHOR
+
+
