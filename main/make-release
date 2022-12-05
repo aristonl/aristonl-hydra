@@ -37,7 +37,7 @@ All users should upgrade ASAP.
 The updated ${RELNUM} git tree can be found at:
 	ssh://git.n11.dev/hydra.git hydra-${RELNUM}
 and can be browsed online via GitHub thru:
-	https://github.com/aristonl/hydra/releases/tag/${RELNUM}
+	https://github.com/n11software/hydra/releases/tag/${RELNUM}
 
 Any bug fixes/security fixes should be directed to the Hydra
 stable tree. All other patches for the next incremental major
@@ -64,7 +64,7 @@ __EOF__
 # send release email out
 
 TO="hydra-inferno@googlegroups.com"
-CC="levicowan2005@icloud.com"
+CC="levih@n11.dev"
 SUBJECT="Hydra/Inferno ${RELNUM}"
 
 #neomutt -s "${SUBJECT}" -a ${RELDIR}/${RELNUM}/email -c ${CC} ${TO}

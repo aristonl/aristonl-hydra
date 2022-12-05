@@ -12,12 +12,11 @@ PATCH=$1
 
 FROM=$EMAIL_ADDR
 
-git_apply() {
-	git am -s
-	echo "[ret] to continue"
-	read
-	git commit --amend
-}
+	#git am -s
+	#echo "[ret] to continue"
+	#read
+	#git commit --amend
+
 
 author()
 {
@@ -74,28 +73,43 @@ author()
 
 # Look fof message ID and subject
 # echo "PATCH = $PATCH"
-SUBJECT=`grep "Subject:" $PATCH | sed s/Subject\:\ //`
-MESSAGE_ID=`grep -i "^Message-ID:" $PATCH | cut -f 2 -d ' ' | cut -f 2 -d '<' | cut -f 1 -d '>'`
-author AUTHOR $1 FIRST_AUTHOR
-	if [ x"$AUTHOR" == "x" ]
-	then
-		echo "nobody to notify"
-		exit 0
-	fi
-	to=""
-	for i in $(echo "$AUTHOR" | sed -e 's/,/ /g')
-	do
-		if ! echo "$TO" | grep "$i"
-		then
-			to=$to" -to $i"
-		fi
-	done
-	if [ x"$cc" != x ]
-	then
-		cc="-cc $cc"
-	fi
-echo $MESSAGE_ID
-echo $SUBJECT
-echo $AUTHOR
+#SUBJECT=`grep "Subject:" $PATCH | sed s/Subject\:\ //`
+#MESSAGE_ID=`grep -i "^Message-Id:" $PATCH | cut -f 2 -d ' ' | cut -f 2 -d '<' | cut -f 1 -d '>'`
+#author AUTHOR $1 FIRST_AUTHOR
+#	if [ x"$AUTHOR" == "x" ]
+#	then
+#		echo "nobody to notify"
+#		exit 0
+#	fi
+#	to=""
+#	for i in $(echo "$AUTHOR" | sed -e 's/,/ /g')
+#	do
+#		if ! echo "$TO" | grep "$i"
+#		then
+#			to=$to" -to $i"
+#		fi
+#	done
+#	if [ x"$cc" != x ]
+#	then
+#		cc="-cc $cc"
+#	fi
 
+#        PATCH=$1
+#       patch_name=$(stripit $1)
+#       PATCH=$P/patches/$patch_name.patch
+#       TXT=$P/txt/$patch_name.txt
+#       if [ ! -f $TXT ]
+#       then
+#               echo $TXT is missing
+#               exit 1
+#       fi
+#       SUBJECT=`grep -a "Subject:" $PATCH`
+        SUBJECT=`grep -a "Subject:" $PATCH | sed s/Subject\:\ //`
+#       SUBJECT=$(head -n 2 $PATCH | tail -n 1)
+        MESSAGE_ID=`grep -a -i "^Message-ID:" $PATCH | cut -f 2 -d ' ' | cut -f 2 -d '<' | cut -f 1 -d '>'`
+        #author AUTHOR $1 FIRST_AUTHOR
+        #echo "author said $AUTHOR"
+        #echo "first_author said $FIRST_AUTHOR"
+
+echo "Acknowledged $SUBJECT..."
 
