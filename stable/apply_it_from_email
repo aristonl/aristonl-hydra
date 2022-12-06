@@ -43,7 +43,8 @@ echo "${txtblu}~/hydra/scripts/c2p $COMMIT_ID${txtrst}"
 #tilix --geometry=120x30 --command="${C2P} ${COMMIT_ID}" 2> /dev/null &
 #tilix --command="${C2P} ${COMMIT_ID}"
 #kitty ${C2P} ${COMMIT_ID} &
-${C2P} ${COMMIT_ID} 2> /dev/null &
+#${C2P} ${COMMIT_ID} 2> /dev/null &
 
+c2p ${COMMIT_ID}
 
 exit
