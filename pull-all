@@ -2,9 +2,46 @@
 #
 # Pull all repositories
 
-gum spin --spinner dot --title "Cloning releases repo..." -- git clone ssh://git.n11.dev/releases releases
+# Text color variables
+txtund=$(tput sgr 0 1)    # Underline
+txtbld=$(tput bold)       # Bold
+txtred=$(tput setaf 1)    # Red
+txtgrn=$(tput setaf 2)    # Green
+txtylw=$(tput setaf 3)    # Yellow
+txtblu=$(tput setaf 4)    # Blue
+txtpur=$(tput setaf 5)    # Purple
+txtcyn=$(tput setaf 6)    # Cyan
+txtwht=$(tput setaf 7)    # White
+txtrst=$(tput sgr0)       # Text reset
 
-gum spin --spinner dot --title "Cloning hydra main..." -- git clone ssh://git.n11.dev/hydra main/n11
-# make a repo for the queues!
+echo "${txtgrn} Cloning upstream hydra... ${txtrst}" 
+git clone ssh://git.n11.dev/hydra main/n11
+if [ $? -ne 0 ] ; then
+	echo "${txtred} Cannot clone.${txtrst}"
+	echo "${txtgrn} Attempting to pull upstream hydra. ${txtrst}"
+	cd main/n11
+	git pull
+	
+	if [ $? -ne 0] ; then
+		echo "${txtred} Cannot pull. ${txtrst}"
+	fi
 
-gum spin --spinner dot --title "Cloning hydra stable" -- git clone ssh://git.n11.dev/hydra-stable stable/aristonl
+else
+	echo "${txtred} Cannot clone.${txtrst}"
+fi
+
+
+echo "Cloning stable hydra..." 
+git clone ssh://git.n11.dev/hydra-stable stable/aristonl
+if [ $? -ne 0 ] ; then
+    echo "${txtred} Cannot clone.${txtrst}"
+    echo "${txtgrn} Attempting to pull upstream hydra. ${txtrst}"
+    cd stable/aristonl
+	git remote add n11 ssh://git.n11.dev/hydra
+    git pull n11
+	if [ $? -ne 0] ; then
+        echo "${txtred} Cannot pull. ${txtrst}"
+    fi
+else
+    echo "${txtred} Cannot clone.${txtrst}"
+fi
