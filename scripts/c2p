@@ -113,7 +113,7 @@ close FILE;
 
 #print "$tmpfile\n";
 
-system "nvim -c \":set syntax=mail\" $tmpfile";
+system "nvim -c \":set syntax=diff\" $tmpfile";
 system "reset";
 $new_file = `rename-patch $tmpfile`;
 chomp($new_file);
