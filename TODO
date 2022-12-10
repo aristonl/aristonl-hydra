@@ -1,1 +1,2 @@
- - work on libc and hydra std libraries
+ - Malloc implementation
+ - update libc to match glibc and gcc
