@@ -1,2 +1,8 @@
  - Malloc implementation
  - update libc to match glibc and gcc
+ - work on libc and hydra std libraries
+ - Implement UEFI boot stub
+  	- Make the efi.h header
+	- Implement UEFI runtime services
+	- Implement UEFI boot services
+	- Implement UEFI app entry point
