@@ -14,7 +14,7 @@ SCRIPTS/
 
 This folder contains all scripts that can be used
 universally or by other applications (such as neomutt
-for appling patches).
+for appling patches). This is added to $PATH
 
 STABLE/
 
