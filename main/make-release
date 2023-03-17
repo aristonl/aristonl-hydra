@@ -39,9 +39,9 @@ The updated ${RELNUM} git tree can be found at:
 and can be browsed online via GitHub thru:
 	https://github.com/n11software/hydra/releases/tag/${RELNUM}
 
-Any bug fixes/security fixes should be directed to the Hydra
-stable tree. All other patches for the next incremental major
-version of Hydra can be submitted to the main tree.
+This now starts the next release-series and all patches
+that were accepted that aren't included in ${RELNUM} will
+be included in this next merge window.
 
 ---
 
